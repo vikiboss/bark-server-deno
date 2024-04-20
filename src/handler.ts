@@ -28,7 +28,7 @@ export class Handler {
     const isBodyForm = contentType?.includes('application/x-www-form-urlencoded')
 
     const payload: Record<string, any> = {}
-    const pathnameParams = pathname.split('/').filter(Boolean)
+    const pathnameParams = pathname.split('/').filter(Boolean).map(decodeURIComponent)
 
     if (pathnameParams.length === 2) {
       ;[payload.device_Key, payload.body] = pathnameParams
