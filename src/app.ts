@@ -1,5 +1,5 @@
 import { BARK_KEY } from './env.ts'
-import { Handler } from './main.ts'
+import { Handler } from './handler.ts'
 import { Utils } from './util.ts'
 
 Deno.serve((req: Request) => {
