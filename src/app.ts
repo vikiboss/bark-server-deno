@@ -18,7 +18,7 @@ Deno.serve(async (req: Request) => {
 
     // mock to be compatible with the Bark iOS App
     case '/register':
-      const { device_token = '' } = await req.json()
+      const { device_token = '' } = JSON.parse((await req.text()) || '{}')
       const device_key = 'you-should-edit-it-on-deno-deploy'
       return Utils.createRes('success', 200, { device_key, device_token })
     case '/register/you-should-edit-it-on-deno-deploy':
