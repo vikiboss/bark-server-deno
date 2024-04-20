@@ -2,7 +2,7 @@ import { BARK_KEY } from './env.ts'
 import { Handler } from './handler.ts'
 import { Utils } from './util.ts'
 
-Deno.serve((req: Request) => {
+Deno.serve(async (req: Request) => {
   const { pathname, searchParams } = new URL(req.url)
 
   const isAuthenticated = searchParams.get('key') === BARK_KEY
@@ -18,10 +18,9 @@ Deno.serve((req: Request) => {
 
     // mock to be compatible with the Bark iOS App
     case '/register':
-      return Utils.createRes('success', 200, {
-        key: 'you-should-edit-it-on-deno-deploy', // for old version
-        device_key: 'you-should-edit-it-on-deno-deploy',
-      })
+      const { device_token = '' } = await req.json()
+      const device_key = 'you-should-edit-it-on-deno-deploy'
+      return Utils.createRes('success', 200, { device_key, device_token })
     case '/register/you-should-edit-it-on-deno-deploy':
       return Utils.createRes('success', 200)
   }
