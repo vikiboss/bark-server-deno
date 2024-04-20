@@ -68,13 +68,10 @@ export class Handler {
     )
 
     if (response.status === 200) {
-      return Utils.createRes('success', 200, {
-        responseFromApple: await response.json(),
-      })
+      return Utils.createRes('success', 200, { resFromApple: await response.text() })
     } else {
       try {
-        const message = `push failed: ${JSON.parse(await response.text()).reason}`
-        return Utils.createRes(message, response.status)
+        return Utils.createRes(`push failed: ${await response.text()}`, response.status)
       } catch {
         return Utils.createRes('push failed: unknown error', response.status)
       }
