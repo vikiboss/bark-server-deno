@@ -15,10 +15,10 @@ export class Utils {
   static createRes(message: unknown, code: number = 200, extraProps: Record<string, unknown> = {}) {
     return new Response(
       JSON.stringify({
-        ...extraProps,
         message: message,
         code: code,
         timestamp: Utils.timestamp(),
+        ...extraProps,
       }),
       { status: code }
     )

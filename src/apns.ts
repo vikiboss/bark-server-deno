@@ -1,14 +1,22 @@
 import { Utils } from './util.ts'
 
+const AUTH_KEY = `
+-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg4vtC3g5L5HgKGJ2+
+T1eA0tOivREvEAY2g+juRXJkYL2gCgYIKoZIzj0DAQehRANCAASmOs3JkSyoGEWZ
+sUGxFs/4pw1rIlSV2IC19M8u3G5kq36upOwyFWj9Gi3Ejc9d3sC7+SHRqXrEAJow
+8/7tRpV+
+-----END PRIVATE KEY-----
+`
+
 export class BarkAPNs {
   static TOPIC = 'me.fin.bark'
   static APNS_HOST_NAME = 'api.push.apple.com'
 
   static AUTH_KEY_ID = 'LH4T9V5U4R'
   static AUTH_KEY_TEAM_ID = '5U8LBRXG3A'
-  static AUTH_KEY = Deno.readTextFileSync(new URL('./certs/auth-key.p8', import.meta.url))
 
-  static AUTH_KEY_PEM = BarkAPNs.AUTH_KEY.replace('-----BEGIN PRIVATE KEY-----', '')
+  static BARK_AUTH_KEY_PEM = AUTH_KEY.replace('-----BEGIN PRIVATE KEY-----', '')
     .replace('-----END PRIVATE KEY-----', '')
     .replace(/\s/g, '')
     .trim()
@@ -19,7 +27,7 @@ export class BarkAPNs {
   async generateAuthToken() {
     const privateKey = await crypto.subtle.importKey(
       'pkcs8',
-      Utils.base64ToArrayBuffer(BarkAPNs.AUTH_KEY_PEM),
+      Utils.base64ToArrayBuffer(BarkAPNs.BARK_AUTH_KEY_PEM),
       { name: 'ECDSA', namedCurve: 'P-256' },
       false,
       ['sign']
@@ -54,7 +62,7 @@ export class BarkAPNs {
     return this.token
   }
 
-  async push(deviceToken: string, notice: APNNotice, barkExtParams?: BarkExtParams) {
+  async push(deviceToken: string, aps: APSContent, barkExtParams?: BarkExtParams) {
     const pushUrl = `https://${BarkAPNs.APNS_HOST_NAME}/3/device/${deviceToken}`
     const authToken = await this.getAPNsAuthToken()
 
@@ -66,7 +74,7 @@ export class BarkAPNs {
         authorization: `bearer ${authToken}`,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ aps: { ...notice }, ...barkExtParams }),
+      body: JSON.stringify({ aps: { ...aps }, ...barkExtParams }),
     })
   }
 }
@@ -122,7 +130,7 @@ export interface SoundDictionary {
   volume?: number
 }
 
-export interface APNNotice {
+export interface APSContent {
   alert?: string | AlertDictionary
   badge?: number
   sound?: string | SoundDictionary

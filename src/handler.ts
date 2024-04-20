@@ -1,63 +1,38 @@
 import { Utils } from './util.ts'
 import { BarkAPNs } from './apns.ts'
-import { BARK_DEVICES } from './env.ts'
+import { BARK_DEFAULT_ICON, BARK_DEVICES } from './constants.ts'
 
 export class Handler {
   static barkAPNsService = new BarkAPNs()
 
-  static async info() {
+  static async status() {
     return Utils.createRes('success', 200, {
-      version: 'v1.0.0',
-      build: '2024-04-20 18:00:00',
-      arch: 'TypeScript (Deno Deploy)',
       devices: BARK_DEVICES,
     })
   }
 
-  static noAuth() {
-    return Utils.createRes('unauthorized', 400)
-  }
-
   static async pushNotification(req: Request) {
-    const { pathname, searchParams } = new URL(req.url)
+    const { searchParams } = new URL(req.url)
 
     const isGetRequest = req.method === 'GET'
-
-    const contentType = req.headers.get('content-type') || ''
-    const isBodyJSON = contentType?.includes('application/json')
-    const isBodyForm = contentType?.includes('application/x-www-form-urlencoded')
-
     const payload: Record<string, any> = {}
-    const pathnameParams = pathname.split('/').filter(Boolean).map(decodeURIComponent)
-
-    if (pathnameParams.length === 2) {
-      ;[payload.device_Key, payload.body] = pathnameParams
-    } else if (pathnameParams.length === 3) {
-      ;[payload.device_Key, payload.title, payload.body] = pathnameParams
-    } else if (pathnameParams.length === 4) {
-      ;[payload.device_Key, payload.category, payload.title, payload.body] = pathnameParams
-    }
 
     if (isGetRequest) {
       searchParams.forEach((value, key) => (payload[key] = value))
     } else {
-      if (isBodyJSON) {
-        ;(await req.json()).forEach((value: string, key: string) => (payload[key] = value))
-      } else if (isBodyForm) {
-        ;(await req.formData()).forEach((value, key) => (payload[key] = value as string))
-      }
+      Object.entries(await req.json()).forEach(([key, value]) => (payload[key] = value))
     }
 
-    const key = payload.device_Key
+    const [key, token] = [payload.device_key, payload.device_token]
 
-    if (!key) {
+    if (!key && !token) {
       return Utils.createRes('failed to push: device key is required', 400)
     }
 
-    const deviceToken = BARK_DEVICES.find(e => e.key === key)?.token
+    const deviceToken = BARK_DEVICES.find(e => e.key === key)?.token || token
 
     if (!deviceToken) {
-      return Utils.createRes(`failed to get device token from key 「${key}」`, 400)
+      return Utils.createRes(`failed to push: device_token is required`, 400)
     }
 
     const response = await Handler.barkAPNsService.push(
@@ -71,7 +46,7 @@ export class Handler {
         badge: payload.badge,
         category: payload.category,
         sound: {
-          name: payload.sound ?? 'healthnotification',
+          name: payload.sound || BARK_DEFAULT_ICON || 'healthnotification',
           critical: payload.soundCritical ?? 0,
           volume: payload.soundVolume ?? 1.0,
         },
@@ -79,8 +54,11 @@ export class Handler {
         'mutable-content': 1,
       },
       {
-        isArchive: payload.isArchive,
-        icon: payload.icon,
+        isArchive: payload.isArchive ?? '1',
+        icon:
+          payload.icon ||
+          BARK_DEFAULT_ICON ||
+          'https://img-share.viki.moe/file/7480a28347ba0f8505461.png',
         ciphertext: payload.ciphertext,
         level: payload.level,
         url: payload.url,

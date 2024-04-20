@@ -1,7 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch ./main.ts",
-    "start": "deno run ./main.ts"
+    "dev": "deno run --allow-env --allow-net ./src/app.ts"
   },
   "lint": {
     "exclude": ["no-unused-vars", "no-explicit-any"]
