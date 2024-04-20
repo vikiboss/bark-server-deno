@@ -10,7 +10,7 @@ Deno.serve(async (req: Request) => {
   // public routes
   switch (pathname) {
     case '/':
-      return new Response(`Bark Server is running, deployed by Deno Deploy (${Date.now()})`)
+      return Utils.createRes('Bark Server (Deno Deploy) is running', 200)
     case '/healthz':
       return new Response('ok')
     case '/ping':
@@ -19,9 +19,9 @@ Deno.serve(async (req: Request) => {
     // mock to be compatible with the Bark iOS App
     case '/register':
       const { device_token = '' } = JSON.parse((await req.text()) || '{}')
-      const device_key = 'you-should-edit-it-on-deno-deploy'
-      return Utils.createRes('success', 200, { device_key, device_token })
-    case '/register/you-should-edit-it-on-deno-deploy':
+      const device_key = 'YouShouldEditItOnDenoDeploy'
+      return Utils.createRes('success', 200, { key: device_key, device_key, device_token })
+    case '/register/YouShouldEditItOnDenoDeploy':
       return Utils.createRes('success', 200)
   }
 
