@@ -29,7 +29,7 @@ export class Handler {
       return Utils.createRes('failed to push: device key is required', 400)
     }
 
-    const deviceToken = BARK_DEVICES.find(e => e.key === key)?.token || token
+    const { token: deviceToken = token } = BARK_DEVICES.find(e => e.key === key.toLowerCase()) || {}
 
     if (!deviceToken) {
       return Utils.createRes(`failed to push: device_token is required`, 400)
