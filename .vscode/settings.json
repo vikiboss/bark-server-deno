@@ -1,6 +1,8 @@
 {
   "deno.enable": true,
+  "deno.lint": false,
   "cSpell.words": [
+    "ciphertext",
     "devicetoken",
     "healthz"
   ]
