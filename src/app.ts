@@ -31,6 +31,7 @@ Deno.serve(async (req: Request) => {
     switch (pathname) {
       case '/status':
         return Handler.status()
+      case '/send':
       case '/push':
         return Handler.pushNotification(req)
       default:

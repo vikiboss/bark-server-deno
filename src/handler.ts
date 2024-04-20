@@ -23,7 +23,7 @@ export class Handler {
       Object.entries(await req.json()).forEach(([key, value]) => (payload[key] = value))
     }
 
-    const [key, token] = [payload.device_key ?? payload.target, payload.device_token]
+    const [key = '', token = ''] = [payload.device_key, payload.device_token]
 
     if (!key && !token) {
       return Utils.createRes('failed to push: device key is required', 400)
@@ -68,7 +68,9 @@ export class Handler {
     )
 
     if (response.status === 200) {
-      return Utils.createRes('success', 200)
+      return Utils.createRes('success', 200, {
+        apnsResponse: response,
+      })
     } else {
       try {
         const message = `push failed: ${JSON.parse(await response.text()).reason}`
