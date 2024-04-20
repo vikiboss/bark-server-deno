@@ -23,7 +23,7 @@ Deno.serve(async (req: Request) => {
   }
 
   if (!isAuthenticated) {
-    return Utils.createRes('Unauthorized. Key is required.', 400)
+    return Utils.createRes('Unauthorized. Check your key.', 400)
   }
 
   try {

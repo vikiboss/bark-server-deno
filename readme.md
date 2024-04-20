@@ -19,12 +19,14 @@
 
 ## 使用
 
+> 换成你自己部署的 URL.
+
 ```bash
 # 推送示例
-curl https://your-deploy-domain.com/push?key=BARK_KEY&device_key=BARK_DEVICE_<device_key>&title=Hello&body=World
+curl https://bark.viki.moe/push?key=BARK_KEY&device_key=BARK_DEVICE_<device_key>&title=Hello&body=World
 
 # 查看设备列表
-https://your-deploy-domain.com/status?key=BARK_KEY
+curl https://bark.viki.moe/status?key=BARK_KEY
 ```
 
 ## 参数
