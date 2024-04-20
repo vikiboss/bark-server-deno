@@ -6,7 +6,7 @@ export class BarkAPNs {
 
   static AUTH_KEY_ID = 'LH4T9V5U4R'
   static AUTH_KEY_TEAM_ID = '5U8LBRXG3A'
-  static AUTH_KEY = Deno.readTextFileSync('./certs/auth-key.p8')
+  static AUTH_KEY = Deno.readTextFileSync(new URL('./certs/auth-key.p8', import.meta.url))
 
   static AUTH_KEY_PEM = BarkAPNs.AUTH_KEY.replace('-----BEGIN PRIVATE KEY-----', '')
     .replace('-----END PRIVATE KEY-----', '')
