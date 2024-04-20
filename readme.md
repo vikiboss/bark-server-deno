@@ -1,6 +1,6 @@
-# Bark Webhook for Deno Deploy
+# Bark Server for Deno Deploy
 
-自用的 Bark Webhook，运行在 Deno Deploy 上，用于推送消息到 iOS 设备。
+自用的 Bark Server，运行在 Deno Deploy 上，用于推送消息到 iOS 设备。
 
 > [!IMPORTANT]
 > 不兼容官方 Bark Server，只是使用了 Bark iOS 客户端的接收能力，与官方的 Bark Server 路由不同，但参数基本一致。
@@ -15,7 +15,7 @@
 - `BARK_KEY`: 访问 Webhook 的鉴权密钥
 - `BARK_DEVICE_<device_key>`: 刚复制的 Device Token
 
-> `<device_key>` 为后续调用 Webhook 的 `device_key`，单设备唯一，可添加多个，按 key 区分。
+> `<device_key>` 为后续调用的 `device_key`，单设备唯一，可添加多个，按 key 区分。
 
 ## 使用
 
@@ -23,7 +23,7 @@
 
 ```bash
 # 推送示例
-curl https://bark.viki.moe/push?key=BARK_KEY&device_key=BARK_DEVICE_<device_key>&title=Hello&body=World
+curl https://bark.viki.moe/push?key=BARK_KEY&device_key=BARK_DEVICE_KEY&title=Hello&body=World
 
 # 查看设备列表
 curl https://bark.viki.moe/status?key=BARK_KEY
