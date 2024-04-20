@@ -17,9 +17,7 @@ Deno.serve((req: Request) => {
       return Utils.createRes('pong', 200)
     case '/register':
       // mock to be compatible with the Bark iOS App
-      return Utils.createRes('success', 200, {
-        device_key: 'you-should-edit-it-on-deno-deploy',
-      })
+      return Utils.createRes('success', 200, { key: 'you-should-edit-it-on-deno-deploy' })
   }
 
   if (!isAuthenticated) {
@@ -30,7 +28,7 @@ Deno.serve((req: Request) => {
   switch (pathname) {
     case '/info':
       return Handler.info()
+    default:
+      return Handler.pushNotification(req)
   }
-
-  return Handler.pushNotification(req)
 })
