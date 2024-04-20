@@ -16,16 +16,11 @@ Deno.serve(async (req: Request) => {
     case '/ping':
       return Utils.createRes('pong', 200)
 
-    case '/test':
-      Deno.env.set('BARK_TEST', Date.now().toString())
-      return Utils.createRes('try to write', 200)
-
     // mock to be compatible with the Bark iOS App
     case '/register':
       const { device_token = '' } = JSON.parse((await req.text()) || '{}')
       const device_key = 'YouShouldEditItOnDenoDeploy'
-
-      return Utils.createRes('success', 200, { key: device_key, device_key, device_token })
+      return Utils.createRes('success', 200, { data: { device_key, device_token } })
     case '/register/YouShouldEditItOnDenoDeploy':
       return Utils.createRes('success', 200)
   }
