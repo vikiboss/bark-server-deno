@@ -23,7 +23,7 @@ export class Handler {
       Object.entries(await req.json()).forEach(([key, value]) => (payload[key] = value))
     }
 
-    const [key, token] = [payload.device_key, payload.device_token]
+    const [key, token] = [payload.device_key ?? payload.target, payload.device_token]
 
     if (!key && !token) {
       return Utils.createRes('failed to push: device key is required', 400)
@@ -58,7 +58,7 @@ export class Handler {
         icon:
           payload.icon ||
           BARK_DEFAULT_ICON ||
-          'https://img-share.viki.moe/file/7480a28347ba0f8505461.png',
+          'https://img-share.viki.moe/file/a6512aa634f301dfd37e9.png',
         ciphertext: payload.ciphertext,
         level: payload.level,
         url: payload.url,
