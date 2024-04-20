@@ -69,7 +69,7 @@ export class Handler {
 
     if (response.status === 200) {
       return Utils.createRes('success', 200, {
-        apnsResponse: response,
+        responseFromApple: await response.json(),
       })
     } else {
       try {
