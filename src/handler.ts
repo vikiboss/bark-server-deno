@@ -1,6 +1,6 @@
 import { Utils } from './util.ts'
 import { BarkAPNs } from './apns.ts'
-import { BARK_DEFAULT_ICON, BARK_DEVICES } from './constants.ts'
+import { BARK_DEFAULT_ICON, BARK_DEFAULT_SOUND, BARK_DEVICES } from './constants.ts'
 
 export class Handler {
   static barkAPNsService = new BarkAPNs()
@@ -35,6 +35,8 @@ export class Handler {
       return Utils.createRes(`failed to push: device_token is required`, 400)
     }
 
+    payload.sound = payload.sound.includes('.') ? payload.sound : `${payload.sound}.caf`
+
     const response = await Handler.barkAPNsService.push(
       deviceToken,
       {
@@ -43,17 +45,18 @@ export class Handler {
           title: payload.title,
           subtitle: payload.subtitle,
         },
-        badge: payload.badge,
+        badge: 0,
         category: payload.category,
         sound: {
-          name: payload.sound || BARK_DEFAULT_ICON || 'healthnotification',
+          name: payload.sound || BARK_DEFAULT_SOUND || 'healthnotification.caf',
           critical: payload.soundCritical ?? 0,
           volume: payload.soundVolume ?? 1.0,
         },
-        'thread-id': payload.group,
+        'thread-id': payload.group ?? 'Default',
         'mutable-content': 1,
       },
       {
+        badge: payload.badge,
         isArchive: payload.isArchive ?? '1',
         icon:
           payload.icon ||

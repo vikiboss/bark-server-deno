@@ -170,4 +170,5 @@ export interface BarkExtParams {
   url?: string
   icon?: string
   isArchive?: number
+  badge?: number
 }
