@@ -35,7 +35,8 @@ export class Handler {
       return Utils.createRes(`failed to push: device_token is required`, 400)
     }
 
-    payload.sound = payload.sound.includes('.') ? payload.sound : `${payload.sound}.caf`
+    const _soundName = payload.sound || BARK_DEFAULT_SOUND || 'healthnotification'
+    const soundName = _soundName.includes('.') ? _soundName : `${_soundName}.caf`
 
     const response = await Handler.barkAPNsService.push(
       deviceToken,
@@ -48,7 +49,7 @@ export class Handler {
         badge: 0,
         category: payload.category,
         sound: {
-          name: payload.sound || BARK_DEFAULT_SOUND || 'healthnotification.caf',
+          name: soundName,
           critical: payload.soundCritical ?? 0,
           volume: payload.soundVolume ?? 1.0,
         },
