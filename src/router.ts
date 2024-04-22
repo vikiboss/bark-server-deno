@@ -1,12 +1,12 @@
 import { Router } from 'jsr:@oak/oak@14'
-import { INFO } from './constants.ts'
-import { Handler } from './handler.ts'
-import { Utils } from './util.ts'
+
 import { db } from './db.ts'
-import { readAllSync } from 'jsr:@std/io@0.218/read_all'
+import { Utils } from './util.ts'
+import { Handler } from './handler.ts'
 
 const rootRouter = new Router()
 
+const isAllowQueryNums = false
 const isAllowNewDevice = false
 
 // for health check
@@ -14,7 +14,7 @@ rootRouter.all('/ping', Handler.createResHandler('pong', 200))
 rootRouter.all('/healthz', Handler.createResHandler('ok', 200))
 
 // for info
-rootRouter.all('/info', Handler.createResHandler('success', 200, { ...INFO, devices: 0 }))
+rootRouter.all('/info', Handler.createResHandler('success', 200, Handler.getInfo(isAllowQueryNums)))
 
 // for register
 rootRouter.all('/register', async ctx => {
@@ -45,22 +45,29 @@ rootRouter.all('/register', async ctx => {
   return Handler.createResHandler('ok', 200, { data })(ctx)
 })
 
+// for POST push
 rootRouter.post('/push', ctx => Handler.push(ctx, Handler.normalizeParams(ctx)))
 
-// for push
-rootRouter.all('/:key/:body', async ctx => {
-  const { key, body } = ctx.params
-  Handler.push(ctx, Handler.normalizeParams(ctx, key, body))
-})
+const methods = ['get', 'post'] as const
 
-rootRouter.all('/:key/:title/:body', ctx => {
-  const { key, title, body } = ctx.params
-  Handler.push(ctx, Handler.normalizeParams(ctx, key, title, body))
-})
-
-rootRouter.all('/:key/:category/:title/:body', ctx => {
-  const { key, category, title, body } = ctx.params
-  Handler.push(ctx, Handler.normalizeParams(ctx, key, category, title, body))
-})
+// for path params push (GET/POST)
+methods.forEach(e =>
+  rootRouter[e]('/:key/:body', async ctx => {
+    const { key, body } = ctx.params
+    Handler.push(ctx, Handler.normalizeParams(ctx, key, body))
+  })
+)
+methods.forEach(e =>
+  rootRouter[e]('/:key/:title/:body', ctx => {
+    const { key, title, body } = ctx.params
+    Handler.push(ctx, Handler.normalizeParams(ctx, key, title, body))
+  })
+)
+methods.forEach(e =>
+  rootRouter[e]('/:key/:category/:title/:body', ctx => {
+    const { key, category, title, body } = ctx.params
+    Handler.push(ctx, Handler.normalizeParams(ctx, key, category, title, body))
+  })
+)
 
 export { rootRouter }
