@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --allow-env --allow-net ./src/app.ts"
+    "dev": "deno run --allow-env --allow-net ./main.ts"
   },
   "lint": {
     "exclude": ["no-unused-vars", "no-explicit-any"]
