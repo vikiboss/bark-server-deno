@@ -9,8 +9,9 @@ const rootRouter = new Router()
 const isAllowQueryNums = true
 const isAllowNewDevice = true
 
+rootRouter.all('/', ctx => ctx.response.redirect('https://github.com/vikiboss/bark-on-deno-deploy'))
+
 // for health check
-rootRouter.all('/ping', Handler.createResHandler('pong', 200))
 rootRouter.all('/healthz', Handler.createResHandler('ok', 200))
 
 // for info
