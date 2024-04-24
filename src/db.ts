@@ -1,4 +1,8 @@
-const kv = await Deno.openKv()
+const kvUrl = Deno.env.get('DEV')
+  ? `https://api.deno.com/databases/4edfdd1c-0094-4ab8-b5bd-21a7226af5c6/connect`
+  : undefined
+
+const kv = await Deno.openKv(kvUrl)
 
 export const db = {
   async deviceTokenByKey(key: string = ''): Promise<string | null> {

@@ -18,9 +18,8 @@ rootRouter.all('/info', Handler.createResHandler('success', 200, Handler.getInfo
 
 // for register
 rootRouter.all('/register', async ctx => {
-  const { searchParams } = new URL(ctx.request.url)
-  const deviceToken = searchParams.get('devicetoken')
-  let key = searchParams.get('key')
+  let { key = '', devicetoken = '', device_token = '' } = await Handler.normalizeParams(ctx)
+  const deviceToken = devicetoken || device_token || ''
 
   if (!deviceToken) {
     return Handler.createResHandler('device token required', 400)(ctx)
