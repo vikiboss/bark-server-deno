@@ -6,8 +6,8 @@ import { Handler } from './handler.ts'
 
 const rootRouter = new Router()
 
-const isAllowQueryNums = false
-const isAllowNewDevice = false
+const isAllowQueryNums = true
+const isAllowNewDevice = true
 
 // for health check
 rootRouter.all('/ping', Handler.createResHandler('pong', 200))
@@ -23,7 +23,7 @@ rootRouter.all('/register', async ctx => {
   let key = searchParams.get('key')
 
   if (!deviceToken) {
-    return Handler.createResHandler('ok', 200)(ctx)
+    return Handler.createResHandler('device token required', 400)(ctx)
   }
 
   if (!(key && (await db.deviceTokenByKey(key)))) {
