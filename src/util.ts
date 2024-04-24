@@ -15,10 +15,14 @@ export class Utils {
   static shortUUID() {
     const length = 22
     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789'
-    const randomValues = crypto.getRandomValues(new Uint8Array(length))
+    const charactersLength = characters.length
+    const randomValues = window.crypto.getRandomValues(new Uint8Array(length))
 
     let customUUID = ''
-    for (let i = 0; i < length; i++) customUUID += characters[61 & randomValues[i]]
+    for (let i = 0; i < length; i++) {
+      const index = randomValues[i] % charactersLength
+      customUUID += characters[index]
+    }
     return customUUID
   }
 
