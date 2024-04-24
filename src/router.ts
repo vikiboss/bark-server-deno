@@ -17,12 +17,12 @@ rootRouter.all('/healthz', Handler.createResHandler('ok', 200))
 rootRouter.all('/info', Handler.createResHandler('success', 200, Handler.getInfo(isAllowQueryNums)))
 
 // for register
-rootRouter.all('/register', async ctx => {
+rootRouter.all('/register', async (ctx, next) => {
   let { key = '', devicetoken = '', device_token = '' } = await Handler.normalizeParams(ctx)
   const deviceToken = devicetoken || device_token || ''
 
   if (!deviceToken) {
-    return Handler.createResHandler('device token required', 400)(ctx)
+    return Handler.createResHandler('device token required', 400)(ctx, next)
   }
 
   const keyHasExistToken = !!(await db.getDeviceTokenByKey(key))
@@ -55,19 +55,19 @@ const methods = ['get', 'post'] as const
 methods.forEach(e =>
   rootRouter[e]('/:key/:body', async ctx => {
     const { key, body } = ctx.params
-    Handler.push(ctx, await Handler.normalizeParams(ctx, key, body))
+    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, body))
   })
 )
 methods.forEach(e =>
   rootRouter[e]('/:key/:title/:body', async ctx => {
     const { key, title, body } = ctx.params
-    Handler.push(ctx, await Handler.normalizeParams(ctx, key, title, body))
+    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, title, body))
   })
 )
 methods.forEach(e =>
   rootRouter[e]('/:key/:category/:title/:body', async ctx => {
     const { key, category, title, body } = ctx.params
-    Handler.push(ctx, await Handler.normalizeParams(ctx, key, category, title, body))
+    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, category, title, body))
   })
 )
 

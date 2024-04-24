@@ -3,6 +3,7 @@ import { Utils } from './util.ts'
 import { BarkAPNs } from './apns.ts'
 import { BARK_DEFAULT_ICON, BARK_DEFAULT_SOUND, INFO } from './constants.ts'
 import { RouterContext } from 'jsr:@oak/oak@14/router'
+import { Next } from 'jsr:@oak/oak@14'
 
 export class Handler {
   static barkAPNsService = new BarkAPNs()
@@ -16,9 +17,10 @@ export class Handler {
     code: number = 200,
     extraProps: Record<string, unknown> = {}
   ) {
-    return (ctx: { response: { status: number; body: any } }) => {
+    return async (ctx: { response: { status: number; body: any } }, next?: Next) => {
       ctx.response.status = code
       ctx.response.body = Utils.createRes(message, code, extraProps)
+      await next?.()
     }
   }
 

@@ -38,7 +38,7 @@ export class BarkAPNs {
     )
 
     const JWT_CLAIMS = Utils.base64UrlEncode(
-      JSON.stringify({ iss: BarkAPNs.AUTH_KEY_TEAM_ID, iat: Utils.timestamp() })
+      JSON.stringify({ iss: BarkAPNs.AUTH_KEY_TEAM_ID, iat: Utils.timestamp(true) })
     )
 
     const dataToSign = new TextEncoder().encode(`${JWT_HEADER}.${JWT_CLAIMS}`)
@@ -56,7 +56,7 @@ export class BarkAPNs {
   async getAPNsAuthToken() {
     if (!this.token || this.tokenExpiredAt <= Date.now()) {
       this.token = await this.generateAuthToken()
-      this.tokenExpiredAt = Date.now() + 60 * 60 * 1000
+      this.tokenExpiredAt = Date.now() + 30 * 60 * 1000
     }
 
     return this.token

@@ -1,5 +1,5 @@
 const kvUrl = Deno.env.get('DEV')
-  ? `https://api.deno.com/databases/4edfdd1c-0094-4ab8-b5bd-21a7226af5c6/connect`
+  ? `https://api.deno.com/databases/3bba7e3b-e240-4d97-a4ec-6df63009d1f4/connect`
   : undefined
 
 const kv = await Deno.openKv(kvUrl)
