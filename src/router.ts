@@ -28,7 +28,7 @@ rootRouter.all('/register', async ctx => {
 
   if (!(key && (await db.deviceTokenByKey(key)))) {
     if (isAllowNewDevice) {
-      key = Utils.shortUUID()
+      key = Utils.randomHash()
     } else {
       return Handler.createResHandler('device registration failed: register disabled', 500)(ctx)
     }
