@@ -28,15 +28,3 @@ export const INFO_RESPONSE = Utils.createRes(DESCRIPTION, 200, {
     uptime: START_TIME,
   },
 })
-
-function getEnvDeviceList() {
-  const env = Deno.env.toObject()
-  const prefix = 'BARK_DEVICE_'
-
-  return Object.entries(env)
-    .filter(([key]) => key.startsWith(prefix))
-    .map(([key, value]) => ({
-      key: key.replace(prefix, '').toLowerCase(),
-      token: value,
-    })) as EnvDevice[]
-}
