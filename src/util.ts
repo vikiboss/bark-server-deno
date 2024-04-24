@@ -12,15 +12,18 @@ export class Utils {
     return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
   }
 
-  static randomHash(length: number = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  static randomHash() {
+    const length = 22
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    const randomValues = crypto.getRandomValues(new Uint8Array(length))
 
-    let result = ''
+    let customUUID = ''
+
     for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length)
-      result += chars[randomIndex]
+      customUUID += characters[61 & randomValues[i]]
     }
-    return result
+
+    return customUUID
   }
 
   static createRes(message: unknown, code: number = 200, extraProps: Record<string, unknown> = {}) {
