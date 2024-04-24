@@ -5,7 +5,7 @@ const kvUrl = Deno.env.get('DEV')
 const kv = await Deno.openKv(kvUrl)
 
 export const db = {
-  async deviceTokenByKey(key: string = ''): Promise<string | null> {
+  async getDeviceTokenByKey(key: string = ''): Promise<string | null> {
     if (!key) return null
     return (await kv.get<string>(['deviceToken', key])).value || null
   },

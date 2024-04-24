@@ -25,7 +25,9 @@ rootRouter.all('/register', async ctx => {
     return Handler.createResHandler('device token required', 400)(ctx)
   }
 
-  if (!(key && (await db.deviceTokenByKey(key)))) {
+  const keyHasExistToken = !!(await db.getDeviceTokenByKey(key))
+
+  if (!(key && keyHasExistToken)) {
     if (isAllowNewDevice) {
       key = Utils.randomHash()
     } else {

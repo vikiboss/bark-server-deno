@@ -95,7 +95,7 @@ export class Handler {
 
   static async push<T extends string>(ctx: RouterContext<T>, params: Record<string, any> = {}) {
     const deviceToken =
-      (await db.deviceTokenByKey(params.key)) ??
+      (await db.getDeviceTokenByKey(params.key)) ??
       params.deviceToken ??
       params.devicetoken ??
       params.device_token
@@ -174,6 +174,13 @@ export class Handler {
       ? Object.fromEntries((await ctx.request.body.formData()).entries())
       : params
 
-    return { key, title, body, category, ...resetParams }
+    ;[key, title, body, category] = [
+      key ?? resetParams.key ?? '',
+      title ?? resetParams.title ?? '',
+      body ?? resetParams.body ?? '',
+      category ?? resetParams.category ?? '',
+    ]
+
+    return { ...resetParams, key, title, body, category }
   }
 }
