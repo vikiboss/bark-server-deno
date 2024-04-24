@@ -29,8 +29,6 @@ export class Handler {
       params.devicetoken ??
       params.device_token
 
-    console.log(deviceToken, params)
-
     if (!deviceToken) {
       return Handler.createResHandler(`failed to push: device_token is required`, 400)(ctx)
     }

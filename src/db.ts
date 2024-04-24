@@ -11,6 +11,7 @@ export const db = {
   },
   async saveDeviceTokenByKey(key: string = '', deviceToken: string) {
     if (!key || !deviceToken) return false
+    if (key === 'deleted') return await kv.delete(['deviceToken', key])
     return (await kv.set(['deviceToken', key], deviceToken)).ok
   },
 }

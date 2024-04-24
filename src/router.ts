@@ -55,7 +55,6 @@ const methods = ['get', 'post'] as const
 methods.forEach(e =>
   rootRouter[e]('/:key/:body', async ctx => {
     const { key, body } = ctx.params
-    console.log('key , body', key, body)
     Handler.push(ctx, await Handler.normalizeParams(ctx, key, body))
   })
 )
