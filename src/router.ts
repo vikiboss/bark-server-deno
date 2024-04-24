@@ -63,14 +63,14 @@ methods.forEach(e =>
 methods.forEach(e =>
   rootRouter[e]('/:key/:title/:body', async ctx => {
     const { key, title, body } = ctx.params
-    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, title, body))
+    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, body, title))
   })
 )
 
 methods.forEach(e =>
   rootRouter[e]('/:key/:category/:title/:body', async ctx => {
     const { key, category, title, body } = ctx.params
-    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, category, title, body))
+    return Handler.push(ctx, await Handler.normalizeParams(ctx, key, body, title, category))
   })
 )
 
