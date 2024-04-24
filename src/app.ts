@@ -8,7 +8,7 @@ app.use(rootRouter.routes())
 app.use(rootRouter.allowedMethods())
 
 // fallback to Not Found middleware
-app.use((ctx, next) => {
+app.use(ctx => {
   ctx.response.status = 404
   ctx.response.body = { message: 'Not Found' }
 })

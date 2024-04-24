@@ -17,10 +17,9 @@ export class Handler {
     code: number = 200,
     extraProps: Record<string, unknown> = {}
   ) {
-    return async (ctx: { response: { status: number; body: any } }, next?: Next) => {
+    return (ctx: { response: { status: number; body: any } }) => {
       ctx.response.status = code
       ctx.response.body = Utils.createRes(message, code, extraProps)
-      await next?.()
     }
   }
 
