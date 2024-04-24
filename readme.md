@@ -1,1 +1,3 @@
-# Bark Server for Deno Deploy
+# Bark Server
+
+Works on Deno, Deno Deploy, Cloudflare Workers.
