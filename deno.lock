@@ -3,6 +3,7 @@
   "packages": {
     "specifiers": {
       "jsr:@oak/commons@0.7": "jsr:@oak/commons@0.7.0",
+      "jsr:@oak/oak": "jsr:@oak/oak@14.2.0",
       "jsr:@oak/oak@14": "jsr:@oak/oak@14.2.0",
       "jsr:@std/assert@0.218": "jsr:@std/assert@0.218.2",
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
@@ -15,7 +16,6 @@
       "jsr:@std/io@0.218": "jsr:@std/io@0.218.2",
       "jsr:@std/media-types@0.218": "jsr:@std/media-types@0.218.2",
       "jsr:@std/path@0.218": "jsr:@std/path@0.218.2",
-      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:path-to-regexp@6.2.1": "npm:path-to-regexp@6.2.1"
     },
     "jsr": {
@@ -77,10 +77,6 @@
       }
     },
     "npm": {
-      "@types/node@18.16.19": {
-        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
-        "dependencies": {}
-      },
       "path-to-regexp@6.2.1": {
         "integrity": "sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==",
         "dependencies": {}
