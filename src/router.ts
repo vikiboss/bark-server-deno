@@ -47,7 +47,7 @@ rootRouter.all('/register', async ctx => {
 })
 
 // for POST push
-rootRouter.post('/push', ctx => Handler.push(ctx, Handler.normalizeParams(ctx)))
+rootRouter.post('/push', async ctx => Handler.push(ctx, await Handler.normalizeParams(ctx)))
 
 const methods = ['get', 'post'] as const
 
@@ -55,19 +55,20 @@ const methods = ['get', 'post'] as const
 methods.forEach(e =>
   rootRouter[e]('/:key/:body', async ctx => {
     const { key, body } = ctx.params
-    Handler.push(ctx, Handler.normalizeParams(ctx, key, body))
+    console.log('key , body', key, body)
+    Handler.push(ctx, await Handler.normalizeParams(ctx, key, body))
   })
 )
 methods.forEach(e =>
-  rootRouter[e]('/:key/:title/:body', ctx => {
+  rootRouter[e]('/:key/:title/:body', async ctx => {
     const { key, title, body } = ctx.params
-    Handler.push(ctx, Handler.normalizeParams(ctx, key, title, body))
+    Handler.push(ctx, await Handler.normalizeParams(ctx, key, title, body))
   })
 )
 methods.forEach(e =>
-  rootRouter[e]('/:key/:category/:title/:body', ctx => {
+  rootRouter[e]('/:key/:category/:title/:body', async ctx => {
     const { key, category, title, body } = ctx.params
-    Handler.push(ctx, Handler.normalizeParams(ctx, key, category, title, body))
+    Handler.push(ctx, await Handler.normalizeParams(ctx, key, category, title, body))
   })
 )
 
